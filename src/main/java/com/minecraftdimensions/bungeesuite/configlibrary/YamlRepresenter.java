@@ -1,11 +1,10 @@
 package com.minecraftdimensions.bungeesuite.configlibrary;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Representer;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class YamlRepresenter extends Representer {
 

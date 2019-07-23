@@ -13,15 +13,15 @@ public class ServerData {
     boolean usingTowny;
 
 
-    public ServerData( String name, String shortName, boolean force, String channel, int localDistance, boolean connectionMessages ) {
+    public ServerData(String name, String shortName, boolean force, String channel, int localDistance, boolean connectionMessages) {
         this.serverName = name;
         this.shortName = shortName;
         this.forceChannel = force;
-        if ( channel.equalsIgnoreCase( "server" ) ) {
+        if (channel.equalsIgnoreCase("server")) {
             this.forcedChannel = serverName;
-        } else if ( channel.equalsIgnoreCase( "global" ) ) {
+        } else if (channel.equalsIgnoreCase("global")) {
             this.forcedChannel = "Global";
-        } else if ( channel.equalsIgnoreCase( "local" ) ) {
+        } else if (channel.equalsIgnoreCase("local")) {
             this.forcedChannel = serverName + " Local";
         } else {
             this.forcedChannel = channel;

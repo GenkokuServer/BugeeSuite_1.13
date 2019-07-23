@@ -9,7 +9,7 @@ public class Affix {
     String group;
     String affix;
 
-    public Affix( boolean b, String g, String a ) {
+    public Affix(boolean b, String g, String a) {
         this.type = b;
         this.group = g;
         this.affix = a;

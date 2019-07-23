@@ -21,39 +21,39 @@ public class SocketListener extends Thread {
     private Socket socket = null;
     private int port;
 
-    public SocketListener( Socket socket ) {
+    public SocketListener(Socket socket) {
         this.socket = socket;
     }
 
     //this shit confuses me!
     public void run() {
         try {
-            DataInputStream in = new DataInputStream( socket.getInputStream() );
+            DataInputStream in = new DataInputStream(socket.getInputStream());
 
             port = in.readInt();
             int length = in.readInt();
             byte[] message = new byte[length];
-            in.readFully( message, 0, message.length );
-            DataInputStream data = new DataInputStream( new ByteArrayInputStream( message ) );
+            in.readFully(message, 0, message.length);
+            DataInputStream data = new DataInputStream(new ByteArrayInputStream(message));
 
             String task = data.readUTF();
 
-            if ( task.equals( "PlayersTeleportBackLocation" ) ) {
-                TeleportManager.setPlayersTeleportBackLocation( PlayerManager.getPlayer( data.readUTF() ), new Location( getServer( new InetSocketAddress( socket.getInetAddress(), port ) ), data.readUTF(), data.readDouble(), data.readDouble(), data.readDouble() ) );
+            if (task.equals("PlayersTeleportBackLocation")) {
+                TeleportManager.setPlayersTeleportBackLocation(PlayerManager.getPlayer(data.readUTF()), new Location(getServer(new InetSocketAddress(socket.getInetAddress(), port)), data.readUTF(), data.readDouble(), data.readDouble(), data.readDouble()));
             }
 
 
             data.close();
             in.close();
 
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private ServerInfo getServer( InetSocketAddress inetSocketAddress ) {
-        for ( ServerInfo s : ProxyServer.getInstance().getServers().values() ) {
-            if ( s.getAddress().equals( inetSocketAddress ) ) {
+    private ServerInfo getServer(InetSocketAddress inetSocketAddress) {
+        for (ServerInfo s : ProxyServer.getInstance().getServers().values()) {
+            if (s.getAddress().equals(inetSocketAddress)) {
                 return s;
             }
         }

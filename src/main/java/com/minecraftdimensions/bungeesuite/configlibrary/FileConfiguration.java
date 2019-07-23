@@ -1,13 +1,6 @@
 package com.minecraftdimensions.bungeesuite.configlibrary;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public abstract class FileConfiguration extends MemoryConfiguration {
     public FileConfiguration() {
@@ -31,15 +24,18 @@ public abstract class FileConfiguration extends MemoryConfiguration {
             writer.close();
         }
     }
+
     public void save(String file) throws IOException {
 
         save(new File(file));
     }
 
     public abstract String saveToString();
+
     public void load(File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
         load(new FileInputStream(file));
     }
+
     public void load(InputStream stream) throws IOException, InvalidConfigurationException {
 
         InputStreamReader reader = new InputStreamReader(stream);
@@ -65,7 +61,9 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 
         load(new File(file));
     }
+
     public abstract void loadFromString(String contents) throws InvalidConfigurationException;
+
     protected abstract String buildHeader();
 
     @Override

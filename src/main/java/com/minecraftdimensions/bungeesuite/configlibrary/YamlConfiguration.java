@@ -1,18 +1,18 @@
 package com.minecraftdimensions.bungeesuite.configlibrary;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.Map;
-
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
 
+import java.io.File;
+import java.io.InputStream;
+import java.util.Map;
+
 /**
-* An implementation of {@link Configuration} which saves all files in Yaml.
-* Note that this implementation is not synchronized.
-*/
+ * An implementation of {@link Configuration} which saves all files in Yaml.
+ * Note that this implementation is not synchronized.
+ */
 public class YamlConfiguration extends FileConfiguration {
     protected static final String COMMENT_PREFIX = "# ";
     protected static final String BLANK_CONFIG = "{}\n";
@@ -151,27 +151,20 @@ public class YamlConfiguration extends FileConfiguration {
 
         YamlConfiguration config = new YamlConfiguration();
 
-        try 
-        {
+        try {
             config.load(file);
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return config;
     }
 
-    public static YamlConfiguration loadConfiguration(InputStream stream) 
-    {
+    public static YamlConfiguration loadConfiguration(InputStream stream) {
         YamlConfiguration config = new YamlConfiguration();
 
-        try 
-        {
+        try {
             config.load(stream);
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return config;

@@ -17,31 +17,31 @@ import java.sql.SQLException;
 public class HomesMessageListener implements Listener {
 
     @EventHandler
-    public void receivePluginMessage( PluginMessageEvent event ) throws IOException, SQLException {
-        if ( event.isCancelled() ) {
+    public void receivePluginMessage(PluginMessageEvent event) throws IOException, SQLException {
+        if (event.isCancelled()) {
             return;
         }
-        if ( !( event.getSender() instanceof Server ) )
+        if (!(event.getSender() instanceof Server))
             return;
-        if ( !event.getTag().equalsIgnoreCase( "bsuite:homes-in" ) ) {
+        if (!event.getTag().equalsIgnoreCase("bsuite:homes-in")) {
             return;
         }
-        event.setCancelled( true );
+        event.setCancelled(true);
 
-        DataInputStream in = new DataInputStream( new ByteArrayInputStream( event.getData() ) );
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
 
         String task = in.readUTF();
 
-        if ( task.equals( "deletehome" ) ) {
-            HomesManager.deleteHome( in.readUTF(), in.readUTF() );
-        } else if ( task.equals( "sendplayerhome" ) ) {
-            HomesManager.sendPlayerToHome( PlayerManager.getPlayer( in.readUTF() ), in.readUTF() );
-        } else if ( task.equals( "setplayershome" ) ) {
-            HomesManager.createNewHome( in.readUTF(), in.readInt(), in.readInt(), in.readUTF(), new Location( ( ( Server ) event.getSender() ).getInfo().getName(), in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat() ) );
-        } else if ( task.equals( "gethomeslist" ) ) {
-            HomesManager.listPlayersHomes( PlayerManager.getPlayer( in.readUTF() ) );
-        } else if ( task.equals( "sendversion" ) ) {
-            LoggingManager.log( in.readUTF() );
+        if (task.equals("deletehome")) {
+            HomesManager.deleteHome(in.readUTF(), in.readUTF());
+        } else if (task.equals("sendplayerhome")) {
+            HomesManager.sendPlayerToHome(PlayerManager.getPlayer(in.readUTF()), in.readUTF());
+        } else if (task.equals("setplayershome")) {
+            HomesManager.createNewHome(in.readUTF(), in.readInt(), in.readInt(), in.readUTF(), new Location(((Server) event.getSender()).getInfo().getName(), in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
+        } else if (task.equals("gethomeslist")) {
+            HomesManager.listPlayersHomes(PlayerManager.getPlayer(in.readUTF()));
+        } else if (task.equals("sendversion")) {
+            LoggingManager.log(in.readUTF());
         }
         in.close();
 

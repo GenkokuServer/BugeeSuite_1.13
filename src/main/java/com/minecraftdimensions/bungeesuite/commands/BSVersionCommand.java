@@ -20,60 +20,60 @@ import java.io.IOException;
 public class BSVersionCommand extends Command {
 
     public BSVersionCommand() {
-        super( "bsversion" );
+        super("bsversion");
     }
 
     @SuppressWarnings("deprecation")
-	@Override
-    public void execute( CommandSender sender, String[] args ) {
-        if ( !( sender.hasPermission( "bungeesuite.version" ) || sender.hasPermission( "bungeesuite.admin" ) ) ) {
-            ProxiedPlayer p = ( ProxiedPlayer ) sender;
-            p.chat( "/bsversion" );
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        if (!(sender.hasPermission("bungeesuite.version") || sender.hasPermission("bungeesuite.admin"))) {
+            ProxiedPlayer p = (ProxiedPlayer) sender;
+            p.chat("/bsversion");
         } else {
             ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream( b );
+            DataOutputStream out = new DataOutputStream(b);
             try {
-                out.writeUTF( "GetVersion" );
+                out.writeUTF("GetVersion");
 
-            } catch ( IOException e ) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            sender.sendMessage( ChatColor.RED + "BungeeSuite version - " + ChatColor.GOLD + BungeeSuite.instance.getDescription().getVersion() );
-            if ( sender instanceof ProxiedPlayer ) {
-                ProxiedPlayer p = ( ProxiedPlayer ) sender;
+            sender.sendMessage(ChatColor.RED + "BungeeSuite version - " + ChatColor.GOLD + BungeeSuite.instance.getDescription().getVersion());
+            if (sender instanceof ProxiedPlayer) {
+                ProxiedPlayer p = (ProxiedPlayer) sender;
                 try {
-                    out.writeUTF( p.getName() );
-                } catch ( IOException e ) {
+                    out.writeUTF(p.getName());
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 ServerInfo s = p.getServer().getInfo();
-                ChatManager.sendPluginMessageTaskChat( s, b );
-                BansManager.sendPluginMessageTaskBans( s, b );
-                HomesManager.sendPluginMessageTaskHomes( s, b );
-                PortalManager.sendPluginMessageTaskPortals( s, b );
-                SpawnManager.sendPluginMessageTaskSpawns( s, b );
-                TeleportManager.sendPluginMessageTaskTP( s, b );
-                WarpsManager.sendPluginMessageTaskTP( s, b );
+                ChatManager.sendPluginMessageTaskChat(s, b);
+                BansManager.sendPluginMessageTaskBans(s, b);
+                HomesManager.sendPluginMessageTaskHomes(s, b);
+                PortalManager.sendPluginMessageTaskPortals(s, b);
+                SpawnManager.sendPluginMessageTaskSpawns(s, b);
+                TeleportManager.sendPluginMessageTaskTP(s, b);
+                WarpsManager.sendPluginMessageTaskTP(s, b);
             } else {
-                if ( args.length == 0 ) {
+                if (args.length == 0) {
                     return;
                 } else {
-                    ServerInfo s = ProxyServer.getInstance().getServerInfo( args[0] );
-                    if ( s == null ) {
-                        sender.sendMessage( ChatColor.RED + "Server does not exist" );
+                    ServerInfo s = ProxyServer.getInstance().getServerInfo(args[0]);
+                    if (s == null) {
+                        sender.sendMessage(ChatColor.RED + "Server does not exist");
                         return;
                     }
-                    if ( s.getPlayers().size() == 0 ) {
-                        sender.sendMessage( ChatColor.RED + "That server is either offline or there are no players on it" );
+                    if (s.getPlayers().size() == 0) {
+                        sender.sendMessage(ChatColor.RED + "That server is either offline or there are no players on it");
                         return;
                     }
-                    ChatManager.sendPluginMessageTaskChat( s, b );
-                    BansManager.sendPluginMessageTaskBans( s, b );
-                    HomesManager.sendPluginMessageTaskHomes( s, b );
-                    PortalManager.sendPluginMessageTaskPortals( s, b );
-                    SpawnManager.sendPluginMessageTaskSpawns( s, b );
-                    TeleportManager.sendPluginMessageTaskTP( s, b );
-                    WarpsManager.sendPluginMessageTaskTP( s, b );
+                    ChatManager.sendPluginMessageTaskChat(s, b);
+                    BansManager.sendPluginMessageTaskBans(s, b);
+                    HomesManager.sendPluginMessageTaskHomes(s, b);
+                    PortalManager.sendPluginMessageTaskPortals(s, b);
+                    SpawnManager.sendPluginMessageTaskSpawns(s, b);
+                    TeleportManager.sendPluginMessageTaskTP(s, b);
+                    WarpsManager.sendPluginMessageTaskTP(s, b);
                 }
             }
         }

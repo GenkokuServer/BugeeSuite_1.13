@@ -6,9 +6,10 @@ public class MemoryConfiguration extends MemorySection implements Configuration 
     protected Configuration defaults;
     protected MemoryConfigurationOptions options;
 
-    public MemoryConfiguration() {}
-    public MemoryConfiguration(Configuration defaults) 
-    {
+    public MemoryConfiguration() {
+    }
+
+    public MemoryConfiguration(Configuration defaults) {
         this.defaults = defaults;
     }
 
@@ -48,8 +49,7 @@ public class MemoryConfiguration extends MemorySection implements Configuration 
         return null;
     }
 
-    public MemoryConfigurationOptions options()
-    {
+    public MemoryConfigurationOptions options() {
         if (options == null) {
             options = new MemoryConfigurationOptions(this);
         }

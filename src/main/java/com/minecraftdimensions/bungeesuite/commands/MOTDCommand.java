@@ -12,18 +12,18 @@ import net.md_5.bungee.api.plugin.Command;
 public class MOTDCommand extends Command {
 
     public MOTDCommand() {
-        super( "motd" );
+        super("motd");
     }
 
     @SuppressWarnings("deprecation")
-	@Override
-    public void execute( CommandSender sender, String[] args ) {
-        if ( !( sender.hasPermission( "bungeesuite.motd" ) || sender.hasPermission( "bungeesuite.admin" ) ) ) {
-            ProxiedPlayer p = ( ProxiedPlayer ) sender;
-            p.chat( "/motd" );
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        if (!(sender.hasPermission("bungeesuite.motd") || sender.hasPermission("bungeesuite.admin"))) {
+            ProxiedPlayer p = (ProxiedPlayer) sender;
+            p.chat("/motd");
         } else {
-            for ( String split : Messages.MOTD.split( "\n" ) ) {
-                sender.sendMessage( split );
+            for (String split : Messages.MOTD.split("\n")) {
+                sender.sendMessage(split);
             }
 
         }

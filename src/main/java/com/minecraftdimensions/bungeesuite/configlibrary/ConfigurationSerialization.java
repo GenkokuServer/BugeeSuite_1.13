@@ -167,6 +167,7 @@ public class ConfigurationSerialization {
     public static Class<? extends ConfigurationSerializable> getClassByAlias(String alias) {
         return aliases.get(alias);
     }
+
     public static String getAlias(Class<? extends ConfigurationSerializable> clazz) {
         DelegateDeserialization delegate = clazz.getAnnotation(DelegateDeserialization.class);
 

@@ -31,7 +31,7 @@ public class BSPlayer {
     private String replyPlayer;
     private boolean firstConnect = true;
 
-    public BSPlayer( String name, String nickname, String channel, boolean muted, boolean chatspying, boolean dnd, boolean tps ) {
+    public BSPlayer(String name, String nickname, String channel, boolean muted, boolean chatspying, boolean dnd, boolean tps) {
         this.playername = name;
         this.nickname = nickname;
         this.channel = channel;
@@ -45,17 +45,17 @@ public class BSPlayer {
         return playername;
     }
 
-    public void setPlayerName( String name ) {
+    public void setPlayerName(String name) {
         this.playername = name;
     }
 
     public ProxiedPlayer getProxiedPlayer() {
-        return ProxyServer.getInstance().getPlayer( playername );
+        return ProxyServer.getInstance().getPlayer(playername);
     }
 
-    public void sendMessage( String message ) {
-        for ( String line : message.split( "\n" ) ) {
-            getProxiedPlayer().sendMessage( line );
+    public void sendMessage(String message) {
+        for (String line : message.split("\n")) {
+            getProxiedPlayer().sendMessage(line);
         }
     }
 
@@ -63,7 +63,7 @@ public class BSPlayer {
         return channel;
     }
 
-    public void setChannel( String channel ) {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -71,7 +71,7 @@ public class BSPlayer {
         return muted;
     }
 
-    public void setMute( boolean mute ) {
+    public void setMute(boolean mute) {
         this.muted = mute;
         updatePlayer();
     }
@@ -81,13 +81,13 @@ public class BSPlayer {
     }
 
     public String getNickname() {
-        if ( nickname == null ) {
+        if (nickname == null) {
             return "";
         }
         return nickname;
     }
 
-    public void setNickname( String nick ) {
+    public void setNickname(String nick) {
         this.nickname = nick;
     }
 
@@ -95,7 +95,7 @@ public class BSPlayer {
         return chatspying;
     }
 
-    public void setChatSpying( boolean spy ) {
+    public void setChatSpying(boolean spy) {
         this.chatspying = spy;
         updatePlayer();
     }
@@ -104,7 +104,7 @@ public class BSPlayer {
         return dnd;
     }
 
-    public void setDND( boolean dnd ) {
+    public void setDND(boolean dnd) {
         this.dnd = dnd;
     }
 
@@ -112,64 +112,64 @@ public class BSPlayer {
         return this.acceptingTeleports;
     }
 
-    public void setAcceptingTeleports( boolean tp ) {
+    public void setAcceptingTeleports(boolean tp) {
         this.acceptingTeleports = tp;
     }
 
-    public void addIgnore( String player ) {
-        this.ignores.add( player );
+    public void addIgnore(String player) {
+        this.ignores.add(player);
     }
 
-    public void removeIgnore( String player ) {
-        this.ignores.remove( player );
+    public void removeIgnore(String player) {
+        this.ignores.remove(player);
     }
 
-    public boolean ignoringPlayer( String player ) {
-        return ignores.contains( player );
+    public boolean ignoringPlayer(String player) {
+        return ignores.contains(player);
     }
 
-    public void joinChannel( Channel channel ) {
-        this.channels.add( channel );
+    public void joinChannel(Channel channel) {
+        this.channels.add(channel);
     }
 
-    public void leaveChannel( Channel channel ) {
-        this.channels.remove( channel );
+    public void leaveChannel(Channel channel) {
+        this.channels.remove(channel);
     }
 
-    public boolean isInChannel( Channel channel ) {
-        return this.channels.contains( channel );
+    public boolean isInChannel(Channel channel) {
+        return this.channels.contains(channel);
     }
 
-    public void joinChannel( String channel ) {
-        this.channels.add( ChatManager.getChannel( channel ) );
+    public void joinChannel(String channel) {
+        this.channels.add(ChatManager.getChannel(channel));
     }
 
-    public void leaveChannel( String channel ) {
-        this.channels.remove( ChatManager.getChannel( channel ) );
+    public void leaveChannel(String channel) {
+        this.channels.remove(ChatManager.getChannel(channel));
     }
 
-    public boolean isInChannel( String channel ) {
-        return this.channels.contains( this.channels.add( ChatManager.getChannel( channel ) ) );
+    public boolean isInChannel(String channel) {
+        return this.channels.contains(this.channels.add(ChatManager.getChannel(channel)));
     }
 
     public Channel getPlayersChannel() {
-        return ChatManager.getChannel( channel );
+        return ChatManager.getChannel(channel);
     }
 
     public ArrayList<Channel> getPlayersChannels() {
         return channels;
     }
 
-    public Channel getPlayersSimilarChannel( String channel ) {
-        for ( Channel chan : channels ) {
-            if ( chan.getName().contains( channel ) ) {
+    public Channel getPlayersSimilarChannel(String channel) {
+        for (Channel chan : channels) {
+            if (chan.getName().contains(channel)) {
                 return chan;
             }
         }
         return null;
     }
 
-    public void setDeathBackLocation( Location loc ) {
+    public void setDeathBackLocation(Location loc) {
         deathBackLocation = loc;
         lastBack = true;
     }
@@ -178,13 +178,13 @@ public class BSPlayer {
         return deathBackLocation != null;
     }
 
-    public void setTeleportBackLocation( Location loc ) {
+    public void setTeleportBackLocation(Location loc) {
         teleportBackLocation = loc;
         lastBack = false;
     }
 
     public Location getLastBackLocation() {
-        if ( lastBack ) {
+        if (lastBack) {
             return deathBackLocation;
         } else {
             return teleportBackLocation;
@@ -192,7 +192,7 @@ public class BSPlayer {
     }
 
     public ServerData getServerData() {
-        return ChatManager.getServerData( getServer() );
+        return ChatManager.getServerData(getServer());
     }
 
     public boolean hasTeleportBackLocation() {
@@ -219,34 +219,34 @@ public class BSPlayer {
         return afk;
     }
 
-    public void setAFK( boolean afk ) {
+    public void setAFK(boolean afk) {
         this.afk = afk;
     }
 
     public void updateDisplayName() {
         String name = getDisplayingName();
-        if ( name.length() > 16 ) {
-            name = getDisplayingName().substring( 0, 16 );
+        if (name.length() > 16) {
+            name = getDisplayingName().substring(0, 16);
         }
-        if ( ChatConfig.updateNicknamesOnTab ) {
-            ProxiedPlayer p = ProxyServer.getInstance().getPlayer( playername );
-            if ( p != null && name != null ) {
-                p.setDisplayName( name );
+        if (ChatConfig.updateNicknamesOnTab) {
+            ProxiedPlayer p = ProxyServer.getInstance().getPlayer(playername);
+            if (p != null && name != null) {
+                p.setDisplayName(name);
             }
         }
     }
 
     public String getDisplayingName() {
-        if ( tempname != null ) {
+        if (tempname != null) {
             return tempname;
-        } else if ( nickname != null ) {
+        } else if (nickname != null) {
             return nickname;
         } else {
             return playername;
         }
     }
 
-    public void setTempName( String name ) {
+    public void setTempName(String name) {
         tempname = name;
         updatePlayer();
         updateDisplayName();
@@ -260,27 +260,27 @@ public class BSPlayer {
 
     public void updatePlayer() {
         try {
-            ChatManager.sendPlayer( playername, getServer(), false );
-        } catch ( SQLException e ) {
+            ChatManager.sendPlayer(playername, getServer(), false);
+        } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public void sendMessageToPlayer( BSPlayer target, String message ) {
-        target.sendMessage( Messages.PRIVATE_MESSAGE_RECEIVE.replace( "{player}", getDisplayingName() ).replace( "{message}", message ) );
+    public void sendMessageToPlayer(BSPlayer target, String message) {
+        target.sendMessage(Messages.PRIVATE_MESSAGE_RECEIVE.replace("{player}", getDisplayingName()).replace("{message}", message));
     }
 
-    public void sendToServer( String targetName ) {
-        getProxiedPlayer().connect( ProxyServer.getInstance().getServerInfo( targetName ) );
+    public void sendToServer(String targetName) {
+        getProxiedPlayer().connect(ProxyServer.getInstance().getServerInfo(targetName));
     }
 
     public Server getServer() {
-        return ProxyServer.getInstance().getPlayer( playername ).getServer();
+        return ProxyServer.getInstance().getPlayer(playername).getServer();
     }
 
-    public boolean isIgnoring( String ignore ) {
-        return ignores.contains( ignore );
+    public boolean isIgnoring(String ignore) {
+        return ignores.contains(ignore);
     }
 
     public ArrayList<String> getIgnores() {
@@ -288,7 +288,7 @@ public class BSPlayer {
     }
 
     public String getTempName() {
-        if ( tempname == null ) {
+        if (tempname == null) {
             return "";
         }
         return tempname;
@@ -298,7 +298,7 @@ public class BSPlayer {
         return !ignores.isEmpty();
     }
 
-    public void setReplyPlayer( String name ) {
+    public void setReplyPlayer(String name) {
         replyPlayer = name;
     }
 
@@ -314,7 +314,7 @@ public class BSPlayer {
         firstConnect = false;
     }
 
-    public void connectTo( ServerInfo s ) {
-        getProxiedPlayer().connect( s );
+    public void connectTo(ServerInfo s) {
+        getProxiedPlayer().connect(s);
     }
 }
