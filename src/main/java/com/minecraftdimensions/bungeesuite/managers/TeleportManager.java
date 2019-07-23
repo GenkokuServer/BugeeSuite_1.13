@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TeleportManager {
@@ -24,6 +25,7 @@ public class TeleportManager {
     public static int teleportWait = TeleportConfig.teleportTime;
 
     public static void initialise() {
+        TeleportConfig.reload();
         pendingTeleportsTPA = new HashMap<BSPlayer, BSPlayer>();
         pendingTeleportsTPAHere = new HashMap<BSPlayer, BSPlayer>();
         expireTime = TeleportConfig.expireTime;
@@ -40,10 +42,17 @@ public class TeleportManager {
             bp.sendMessage(Messages.PLAYER_NOT_ONLINE);
             return;
         }
+        if (!isSameServerGroup(bp, bt)) {
+            bp.sendMessage(Messages.TELEPORT_UNABLE);
+            return;
+        }
+        //TP拒否をしていた場合でもTPリクエストは受け取る
+        /*
         if (!playerIsAcceptingTeleports(bt)) {
             bp.sendMessage(Messages.TELEPORT_UNABLE);
             return;
         }
+        */
         if (playerHasPendingTeleport(bt)) {
             bp.sendMessage(Messages.PLAYER_TELEPORT_PENDING_OTHER);
             return;
@@ -81,10 +90,17 @@ public class TeleportManager {
             bp.sendMessage(Messages.PLAYER_NOT_ONLINE);
             return;
         }
+        if (!isSameServerGroup(bp, bt)) {
+            bp.sendMessage(Messages.TELEPORT_UNABLE);
+            return;
+        }
+        //TP拒否をしていた場合でもTPリクエストは受け取る
+        /*
         if (!playerIsAcceptingTeleports(bt)) {
             bp.sendMessage(Messages.TELEPORT_UNABLE);
             return;
         }
+        */
         if (playerHasPendingTeleport(bt)) {
             bp.sendMessage(Messages.PLAYER_TELEPORT_PENDING_OTHER);
             return;
@@ -114,12 +130,22 @@ public class TeleportManager {
     public static void acceptTeleportRequest(BSPlayer player) {
         if (pendingTeleportsTPA.containsKey(player)) {
             BSPlayer target = pendingTeleportsTPA.get(player);
+            if (!isSameServerGroup(player, target)) {
+                player.sendMessage(Messages.TELEPORT_UNABLE);
+                pendingTeleportsTPA.remove(player);
+                return;
+            }
             target.sendMessage(Messages.TELEPORTED_TO_PLAYER.replace("{player}", player.getDisplayingName()));
             player.sendMessage(Messages.PLAYER_TELEPORTED_TO_YOU.replace("{player}", target.getDisplayingName()));
             teleportPlayerToPlayer(target, player);
             pendingTeleportsTPA.remove(player);
         } else if (pendingTeleportsTPAHere.containsKey(player)) {
             BSPlayer target = pendingTeleportsTPAHere.get(player);
+            if (!isSameServerGroup(player, target)) {
+                player.sendMessage(Messages.TELEPORT_UNABLE);
+                pendingTeleportsTPAHere.remove(player);
+                return;
+            }
             player.sendMessage(Messages.TELEPORTED_TO_PLAYER.replace("{player}", target.getDisplayingName()));
             target.sendMessage(Messages.PLAYER_TELEPORTED_TO_YOU.replace("{player}", player.getDisplayingName()));
             teleportPlayerToPlayer(player, target);
@@ -171,7 +197,11 @@ public class TeleportManager {
         }
     }
 
-    public static void sendPlayerToLastBack(BSPlayer player, boolean death, boolean teleport) {
+    public static void sendPlayerToLastBack(BSPlayer player, boolean death, boolean teleport, boolean bypass) {
+        if (!(bypass || isSameServerGroup(player, player.getLastBackLocation().getServer()))) {
+            player.sendMessage(Messages.NO_BACK_TP);
+            return;
+        }
         if (player.hasDeathBackLocation() || player.hasTeleportBackLocation()) {
             player.sendMessage(Messages.SENT_BACK);
         } else {
@@ -271,11 +301,13 @@ public class TeleportManager {
             s.sendMessage(Messages.PLAYER_NOT_ONLINE);
             return;
         }
-        if (!bypass) {
-            if (!playerIsAcceptingTeleports(p) || !playerIsAcceptingTeleports(t)) {
-                s.sendMessage(Messages.TELEPORT_UNABLE);
-                return;
-            }
+        if (!(bypass || isSameServerGroup(p, t))) {
+            s.sendMessage(Messages.TELEPORT_UNABLE);
+            return;
+        }
+        if (!(bypass || playerIsAcceptingTeleports(p) || playerIsAcceptingTeleports(t))) {
+            s.sendMessage(Messages.TELEPORT_UNABLE);
+            return;
         }
         if (!(sender.equals(player) || sender.equals(target))) {
             s.sendMessage(Messages.PLAYER_TELEPORTED.replace("{player}", p.getName()).replace("{target}", t.getName()));
@@ -285,6 +317,31 @@ public class TeleportManager {
             t.sendMessage(Messages.PLAYER_TELEPORTED_TO_YOU.replace("{player}", p.getName()));
         }
         p.sendMessage(Messages.TELEPORTED_TO_PLAYER.replace("{player}", t.getName()));
+    }
+
+
+    private static boolean isSameServerGroup(BSPlayer player, BSPlayer target) {
+        if (player.getServer().getInfo().getName().equals(target.getServer().getInfo().getName())) {
+            return true;
+        }
+        for (List<String> serverGroup : TeleportConfig.allowServerGroup) {
+            if (serverGroup.contains(player.getServer().getInfo().getName()) && serverGroup.contains(target.getServer().getInfo().getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isSameServerGroup(BSPlayer player, ServerInfo target) {
+        if (player.getServer().getInfo().getName().equals(target.getName())) {
+            return true;
+        }
+        for (List<String> serverGroup : TeleportConfig.allowServerGroup) {
+            if (serverGroup.contains(player.getServer().getInfo().getName()) && serverGroup.contains(target.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

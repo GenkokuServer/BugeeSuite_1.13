@@ -79,7 +79,7 @@ public class TeleportsMessageListener implements Listener {
         }
 
         if (task.equals("SendPlayerBack")) {
-            TeleportManager.sendPlayerToLastBack(PlayerManager.getPlayer(in.readUTF()), in.readBoolean(), in.readBoolean());
+            TeleportManager.sendPlayerToLastBack(PlayerManager.getPlayer(in.readUTF()), in.readBoolean(), in.readBoolean(), in.readBoolean());
             return;
         }
 
