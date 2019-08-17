@@ -305,9 +305,11 @@ public class TeleportManager {
             s.sendMessage(Messages.TELEPORT_UNABLE);
             return;
         }
-        if (!(bypass || playerIsAcceptingTeleports(p) || playerIsAcceptingTeleports(t))) {
-            s.sendMessage(Messages.TELEPORT_UNABLE);
-            return;
+        if(!bypass){
+            if (!playerIsAcceptingTeleports(p) || !playerIsAcceptingTeleports(t)) {
+                s.sendMessage(Messages.TELEPORT_UNABLE);
+                return;
+            }
         }
         if (!(sender.equals(player) || sender.equals(target))) {
             s.sendMessage(Messages.PLAYER_TELEPORTED.replace("{player}", p.getName()).replace("{target}", t.getName()));
